@@ -121,5 +121,7 @@ sudo chmod 644 /etc/systemd/system/jamulus.service
 
 sudo systemctl start jamulus
 
+sudo systemctl status jamulus
 
+sudo systemctl enable jamulus
 
