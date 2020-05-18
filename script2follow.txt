@@ -117,6 +117,10 @@ WantedBy=multi-user.target
 
 save
 
+
+https://github.com/corrados/jamulus/wiki/Server---Linux
+
+
 sudo chmod 644 /etc/systemd/system/jamulus.service
 
 sudo systemctl start jamulus
