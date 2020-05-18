@@ -1,0 +1,103 @@
+https://www.youtube.com/watch?v=9anNmobd5aY
+
+create gcp vm
+
+f1 micro
+
+debian 9 stretch
+
+tag network interface jamulus
+
+change to standard tier network
+
+enable port forwarding
+
+create vm
+
+now click on network interface
+
+create firewall rule
+ name jamulus
+ description Port Forwarding for Jamulus Server
+ 
+ action on match - use network tag to reference network
+ 
+ source ip range 0.0.0.0/0
+ 
+ udp : 22124
+
+create firewall rule
+
+connect to vm via ssh
+
+git clone https://github.com/corrados/jamulus.git
+
+sudo adduser --system --no-create-home jamulus
+
+sudo apt-get install build-essential
+
+sudo apt-get install qt5-qmake
+
+sudo apt-get install qtdeclarative5-dev
+
+libjack-jackd2-dev
+
+sudo apt-get install qt5-default
+
+sudo apt-get install linux-lowlatency-hwe-18.04
+
+qmake Jamulus.pro
+
+make clean
+
+make
+
+qmake "CONFIG+=nosound" Jamulus.pro && make clean && make
+
+to ignore Jack.
+
+Move the resulting Jamulus binary file to a permanent location (you can remove the sources directory).
+
+sudo mv llcon-jamulus/ /usr/local/bin
+
+
+sudo mv jamulus/ /usr/local/bin
+
+/usr/local/bin/jamulus
+
+
+sudo mkdir /var/log/jamulus
+
+sudo chown jamulus:nogroup /var/log/jamulus
+
+
+sudo nano /etc/systemd/system/jamulus.service
+
+
+[Unit]
+Description=AGaitskell-Jamulus-Server
+After=network.target
+[Service]
+Type=simple
+User=jamulus
+NoNewPrivileges=true
+ProtectSystem=true
+ProtectHome=true
+Nice=-20
+IOSchedulingClass=realtime
+IOSchedulingPriority=0
+# This line below is what you want to edit according to your preferences
+ExecStart=/usr/local/bin/jamulus/Jamulus --server --nogui \
+--log /var/log/jamulus/jamulus.log \
+--centralserver jamulus.fischvolk.de \
+--serverinfo "AGaitskell;London;224" \
+--welcomemessage "<h2>Welcome</h2>" \
+--numchannels 10
+# end of section you might want to alter
+Restart=on-failure
+RestartSec=30
+StandardOutput=journal
+StandardError=inherit
+SyslogIdentifier=jamulus
+[Install]
+WantedBy=multi-user.target
