@@ -58,24 +58,20 @@ to ignore Jack.
 
 Move the resulting Jamulus binary file to a permanent location (you can remove the sources directory).
 
-sudo mv llcon-jamulus/ /usr/local/bin
-
-
 sudo mv jamulus/ /usr/local/bin
 
-/usr/local/bin/jamulus
-
+# note : full path /usr/local/bin/jamulus
 
 sudo mkdir /var/log/jamulus
 
 sudo chown jamulus:nogroup /var/log/jamulus
 
-
 sudo nano /etc/systemd/system/jamulus.service
 
+paste following into /etc/systemd/system/jamulus.service
 
 [Unit]
-Description=AGaitskell-Jamulus-Server
+Description=JRL-Jamulus-Server
 After=network.target
 [Service]
 Type=simple
@@ -89,8 +85,7 @@ IOSchedulingPriority=0
 # This line below is what you want to edit according to your preferences
 ExecStart=/usr/local/bin/jamulus/Jamulus --server --nogui \
 --log /var/log/jamulus/jamulus.log \
---centralserver jamulus.fischvolk.de \
---serverinfo "AGaitskell;London;224" \
+--serverinfo "JRL;London;224" \
 --welcomemessage "<h2>Welcome</h2>" \
 --numchannels 10
 # end of section you might want to alter
@@ -101,3 +96,4 @@ StandardError=inherit
 SyslogIdentifier=jamulus
 [Install]
 WantedBy=multi-user.target
+
