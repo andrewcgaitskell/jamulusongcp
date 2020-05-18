@@ -12,6 +12,9 @@ change to standard tier network
 
 enable port forwarding
 
+select a fixed external ip address
+change to standard tier
+
 create vm
 
 now click on network interface
