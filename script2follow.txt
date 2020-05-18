@@ -19,8 +19,12 @@ now click on network interface
 create firewall rule
  name jamulus
  description Port Forwarding for Jamulus Server
+ ingress
+ allow
  
  action on match - use network tag to reference network
+ 
+ type in jamulus
  
  source ip range 0.0.0.0/0
  
@@ -29,6 +33,13 @@ create firewall rule
 create firewall rule
 
 connect to vm via ssh
+
+sudo apt update
+
+sudo apt upgrade
+
+sudo apt install git
+
 
 git clone https://github.com/corrados/jamulus.git
 
@@ -40,23 +51,21 @@ sudo apt-get install qt5-qmake
 
 sudo apt-get install qtdeclarative5-dev
 
-libjack-jackd2-dev
+##### NOT THIS ONE libjack-jackd2-dev
 
 sudo apt-get install qt5-default
 
-sudo apt-get install linux-lowlatency-hwe-18.04
+### sudo apt-get install linux-lowlatency-hwe-18.04
 
-qmake Jamulus.pro
-
-make clean
-
-make
+cd jamulus
 
 qmake "CONFIG+=nosound" Jamulus.pro && make clean && make
 
-to ignore Jack.
+## takes a while to build -- over 5 mins
 
 Move the resulting Jamulus binary file to a permanent location (you can remove the sources directory).
+
+cd ..
 
 sudo mv jamulus/ /usr/local/bin
 
@@ -68,7 +77,11 @@ sudo chown jamulus:nogroup /var/log/jamulus
 
 sudo nano /etc/systemd/system/jamulus.service
 
-paste following into /etc/systemd/system/jamulus.service
+type in xx
+
+ctl x and save
+
+copy the following following into /etc/systemd/system/jamulus.service
 
 [Unit]
 Description=JRL-Jamulus-Server
@@ -86,8 +99,8 @@ IOSchedulingPriority=0
 ExecStart=/usr/local/bin/jamulus/Jamulus --server --nogui \
 --log /var/log/jamulus/jamulus.log \
 --serverinfo "JRL;London;224" \
---welcomemessage "<h2>Welcome</h2>" \
---numchannels 10
+--welcomemessage "<h2>Welcome JRL's Jamulus Server</h2>" \
+--numchannels 20
 # end of section you might want to alter
 Restart=on-failure
 RestartSec=30
@@ -96,4 +109,14 @@ StandardError=inherit
 SyslogIdentifier=jamulus
 [Install]
 WantedBy=multi-user.target
+
+############ to here
+
+save
+
+sudo chmod 644 /etc/systemd/system/jamulus.service
+
+sudo systemctl start jamulus
+
+
 
